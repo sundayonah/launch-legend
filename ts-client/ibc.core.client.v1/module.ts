@@ -6,98 +6,62 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { IdentifiedGenesisMetadata } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/genesis";
-import { QueryClientParamsResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { UpgradeProposal } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
-import { MsgSubmitMisbehaviour } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { MsgUpdateParams } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { QueryConsensusStateResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { MsgRecoverClientResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { QueryClientStateRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { QueryConsensusStateHeightsRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { QueryUpgradedClientStateResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
 import { MsgCreateClient } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
+import { MsgIBCSoftwareUpgradeResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
+import { QueryConsensusStateHeightsRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryUpgradedClientStateRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { IdentifiedClientState } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
+import { Height } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
+import { UpgradeProposal } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
+import { GenesisMetadata } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/genesis";
+import { QueryConsensusStateHeightsResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryUpgradedConsensusStateRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { ConsensusStateWithHeight } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
+import { ClientConsensusStates } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
+import { GenesisState } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/genesis";
+import { QueryClientStateRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryVerifyMembershipResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryClientStatusRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryUpgradedClientStateResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { MsgUpdateClient } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
 import { MsgIBCSoftwareUpgrade } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { QueryClientStatesRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { MsgCreateClientResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
+import { QueryClientParamsRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { ClientUpdateProposal } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
+import { QueryClientStatusResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryConsensusStateResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryConsensusStateRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryClientParamsResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryUpgradedConsensusStateResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { MsgUpgradeClientResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
+import { MsgRecoverClientResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
+import { MsgUpdateParams } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
+import { QueryClientStatesResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryVerifyMembershipRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { QueryConsensusStatesResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { IdentifiedGenesisMetadata } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/genesis";
 import { MsgUpgradeClient } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
 import { MsgSubmitMisbehaviourResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { MsgRecoverClient } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { QueryVerifyMembershipResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { MsgUpdateClientResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { MsgUpgradeClientResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { QueryClientParamsRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { ConsensusStateWithHeight } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
-import { GenesisState } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/genesis";
-import { MsgUpdateParamsResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { QueryConsensusStateRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { QueryClientStatusResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { QueryUpgradedConsensusStateRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { QueryVerifyMembershipRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { MsgIBCSoftwareUpgradeResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { Params } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
-import { QueryClientStatesResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { QueryConsensusStatesResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { QueryUpgradedConsensusStateResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { MsgCreateClientResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { QueryClientStateResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { MsgSubmitMisbehaviour } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
 import { QueryConsensusStatesRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { MsgUpdateClient } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
-import { QueryClientStatusRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { Height } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
-import { ClientConsensusStates } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
-import { GenesisMetadata } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/genesis";
-import { QueryUpgradedClientStateRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { QueryConsensusStateHeightsResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
-import { ClientUpdateProposal } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
-import { IdentifiedClientState } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
+import { Params } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/client";
+import { MsgUpdateParamsResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
+import { QueryClientStatesRequest } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { MsgRecoverClient } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
+import { QueryClientStateResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/query";
+import { MsgUpdateClientResponse } from "./types/../../../../../../../home/onahsunday/go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.3.1/proto/ibc/core/client/v1/tx";
 
 
-export { IdentifiedGenesisMetadata, QueryClientParamsResponse, UpgradeProposal, MsgSubmitMisbehaviour, MsgUpdateParams, QueryConsensusStateResponse, MsgRecoverClientResponse, QueryClientStateRequest, QueryConsensusStateHeightsRequest, QueryUpgradedClientStateResponse, MsgCreateClient, MsgIBCSoftwareUpgrade, QueryClientStatesRequest, MsgUpgradeClient, MsgSubmitMisbehaviourResponse, MsgRecoverClient, QueryVerifyMembershipResponse, MsgUpdateClientResponse, MsgUpgradeClientResponse, QueryClientParamsRequest, ConsensusStateWithHeight, GenesisState, MsgUpdateParamsResponse, QueryConsensusStateRequest, QueryClientStatusResponse, QueryUpgradedConsensusStateRequest, QueryVerifyMembershipRequest, MsgIBCSoftwareUpgradeResponse, Params, QueryClientStatesResponse, QueryConsensusStatesResponse, QueryUpgradedConsensusStateResponse, MsgCreateClientResponse, QueryClientStateResponse, QueryConsensusStatesRequest, MsgUpdateClient, QueryClientStatusRequest, Height, ClientConsensusStates, GenesisMetadata, QueryUpgradedClientStateRequest, QueryConsensusStateHeightsResponse, ClientUpdateProposal, IdentifiedClientState };
+export { MsgCreateClient, MsgIBCSoftwareUpgradeResponse, QueryConsensusStateHeightsRequest, QueryUpgradedClientStateRequest, IdentifiedClientState, Height, UpgradeProposal, GenesisMetadata, QueryConsensusStateHeightsResponse, QueryUpgradedConsensusStateRequest, ConsensusStateWithHeight, ClientConsensusStates, GenesisState, QueryClientStateRequest, QueryVerifyMembershipResponse, QueryClientStatusRequest, QueryUpgradedClientStateResponse, MsgUpdateClient, MsgIBCSoftwareUpgrade, MsgCreateClientResponse, QueryClientParamsRequest, ClientUpdateProposal, QueryClientStatusResponse, QueryConsensusStateResponse, QueryConsensusStateRequest, QueryClientParamsResponse, QueryUpgradedConsensusStateResponse, MsgUpgradeClientResponse, MsgRecoverClientResponse, MsgUpdateParams, QueryClientStatesResponse, QueryVerifyMembershipRequest, QueryConsensusStatesResponse, IdentifiedGenesisMetadata, MsgUpgradeClient, MsgSubmitMisbehaviourResponse, MsgSubmitMisbehaviour, QueryConsensusStatesRequest, Params, MsgUpdateParamsResponse, QueryClientStatesRequest, MsgRecoverClient, QueryClientStateResponse, MsgUpdateClientResponse };
 
-type sendIdentifiedGenesisMetadataParams = {
-  value: IdentifiedGenesisMetadata,
+type sendMsgCreateClientParams = {
+  value: MsgCreateClient,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryClientParamsResponseParams = {
-  value: QueryClientParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendUpgradeProposalParams = {
-  value: UpgradeProposal,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSubmitMisbehaviourParams = {
-  value: MsgSubmitMisbehaviour,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateParamsParams = {
-  value: MsgUpdateParams,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryConsensusStateResponseParams = {
-  value: QueryConsensusStateResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgRecoverClientResponseParams = {
-  value: MsgRecoverClientResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryClientStateRequestParams = {
-  value: QueryClientStateRequest,
+type sendMsgIBCSoftwareUpgradeResponseParams = {
+  value: MsgIBCSoftwareUpgradeResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -108,14 +72,92 @@ type sendQueryConsensusStateHeightsRequestParams = {
   memo?: string
 };
 
+type sendQueryUpgradedClientStateRequestParams = {
+  value: QueryUpgradedClientStateRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendIdentifiedClientStateParams = {
+  value: IdentifiedClientState,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendHeightParams = {
+  value: Height,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendUpgradeProposalParams = {
+  value: UpgradeProposal,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendGenesisMetadataParams = {
+  value: GenesisMetadata,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryConsensusStateHeightsResponseParams = {
+  value: QueryConsensusStateHeightsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryUpgradedConsensusStateRequestParams = {
+  value: QueryUpgradedConsensusStateRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendConsensusStateWithHeightParams = {
+  value: ConsensusStateWithHeight,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendClientConsensusStatesParams = {
+  value: ClientConsensusStates,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendGenesisStateParams = {
+  value: GenesisState,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryClientStateRequestParams = {
+  value: QueryClientStateRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryVerifyMembershipResponseParams = {
+  value: QueryVerifyMembershipResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryClientStatusRequestParams = {
+  value: QueryClientStatusRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
 type sendQueryUpgradedClientStateResponseParams = {
   value: QueryUpgradedClientStateResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgCreateClientParams = {
-  value: MsgCreateClient,
+type sendMsgUpdateClientParams = {
+  value: MsgUpdateClient,
   fee?: StdFee,
   memo?: string
 };
@@ -126,8 +168,92 @@ type sendMsgIBCSoftwareUpgradeParams = {
   memo?: string
 };
 
-type sendQueryClientStatesRequestParams = {
-  value: QueryClientStatesRequest,
+type sendMsgCreateClientResponseParams = {
+  value: MsgCreateClientResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryClientParamsRequestParams = {
+  value: QueryClientParamsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendClientUpdateProposalParams = {
+  value: ClientUpdateProposal,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryClientStatusResponseParams = {
+  value: QueryClientStatusResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryConsensusStateResponseParams = {
+  value: QueryConsensusStateResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryConsensusStateRequestParams = {
+  value: QueryConsensusStateRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryClientParamsResponseParams = {
+  value: QueryClientParamsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryUpgradedConsensusStateResponseParams = {
+  value: QueryUpgradedConsensusStateResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpgradeClientResponseParams = {
+  value: MsgUpgradeClientResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgRecoverClientResponseParams = {
+  value: MsgRecoverClientResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateParamsParams = {
+  value: MsgUpdateParams,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryClientStatesResponseParams = {
+  value: QueryClientStatesResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryVerifyMembershipRequestParams = {
+  value: QueryVerifyMembershipRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryConsensusStatesResponseParams = {
+  value: QueryConsensusStatesResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendIdentifiedGenesisMetadataParams = {
+  value: IdentifiedGenesisMetadata,
   fee?: StdFee,
   memo?: string
 };
@@ -144,116 +270,8 @@ type sendMsgSubmitMisbehaviourResponseParams = {
   memo?: string
 };
 
-type sendMsgRecoverClientParams = {
-  value: MsgRecoverClient,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryVerifyMembershipResponseParams = {
-  value: QueryVerifyMembershipResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateClientResponseParams = {
-  value: MsgUpdateClientResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpgradeClientResponseParams = {
-  value: MsgUpgradeClientResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryClientParamsRequestParams = {
-  value: QueryClientParamsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendConsensusStateWithHeightParams = {
-  value: ConsensusStateWithHeight,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendGenesisStateParams = {
-  value: GenesisState,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryConsensusStateRequestParams = {
-  value: QueryConsensusStateRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryClientStatusResponseParams = {
-  value: QueryClientStatusResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryUpgradedConsensusStateRequestParams = {
-  value: QueryUpgradedConsensusStateRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryVerifyMembershipRequestParams = {
-  value: QueryVerifyMembershipRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgIBCSoftwareUpgradeResponseParams = {
-  value: MsgIBCSoftwareUpgradeResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendParamsParams = {
-  value: Params,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryClientStatesResponseParams = {
-  value: QueryClientStatesResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryConsensusStatesResponseParams = {
-  value: QueryConsensusStatesResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryUpgradedConsensusStateResponseParams = {
-  value: QueryUpgradedConsensusStateResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgCreateClientResponseParams = {
-  value: MsgCreateClientResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryClientStateResponseParams = {
-  value: QueryClientStateResponse,
+type sendMsgSubmitMisbehaviourParams = {
+  value: MsgSubmitMisbehaviour,
   fee?: StdFee,
   memo?: string
 };
@@ -264,111 +282,177 @@ type sendQueryConsensusStatesRequestParams = {
   memo?: string
 };
 
-type sendMsgUpdateClientParams = {
-  value: MsgUpdateClient,
+type sendParamsParams = {
+  value: Params,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryClientStatusRequestParams = {
-  value: QueryClientStatusRequest,
+type sendMsgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendHeightParams = {
-  value: Height,
+type sendQueryClientStatesRequestParams = {
+  value: QueryClientStatesRequest,
   fee?: StdFee,
   memo?: string
 };
 
-type sendClientConsensusStatesParams = {
-  value: ClientConsensusStates,
+type sendMsgRecoverClientParams = {
+  value: MsgRecoverClient,
   fee?: StdFee,
   memo?: string
 };
 
-type sendGenesisMetadataParams = {
-  value: GenesisMetadata,
+type sendQueryClientStateResponseParams = {
+  value: QueryClientStateResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendQueryUpgradedClientStateRequestParams = {
-  value: QueryUpgradedClientStateRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryConsensusStateHeightsResponseParams = {
-  value: QueryConsensusStateHeightsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendClientUpdateProposalParams = {
-  value: ClientUpdateProposal,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendIdentifiedClientStateParams = {
-  value: IdentifiedClientState,
+type sendMsgUpdateClientResponseParams = {
+  value: MsgUpdateClientResponse,
   fee?: StdFee,
   memo?: string
 };
 
 
-type identifiedGenesisMetadataParams = {
-  value: IdentifiedGenesisMetadata,
+type msgCreateClientParams = {
+  value: MsgCreateClient,
 };
 
-type queryClientParamsResponseParams = {
-  value: QueryClientParamsResponse,
-};
-
-type upgradeProposalParams = {
-  value: UpgradeProposal,
-};
-
-type msgSubmitMisbehaviourParams = {
-  value: MsgSubmitMisbehaviour,
-};
-
-type msgUpdateParamsParams = {
-  value: MsgUpdateParams,
-};
-
-type queryConsensusStateResponseParams = {
-  value: QueryConsensusStateResponse,
-};
-
-type msgRecoverClientResponseParams = {
-  value: MsgRecoverClientResponse,
-};
-
-type queryClientStateRequestParams = {
-  value: QueryClientStateRequest,
+type msgIbcsoftwareUpgradeResponseParams = {
+  value: MsgIBCSoftwareUpgradeResponse,
 };
 
 type queryConsensusStateHeightsRequestParams = {
   value: QueryConsensusStateHeightsRequest,
 };
 
+type queryUpgradedClientStateRequestParams = {
+  value: QueryUpgradedClientStateRequest,
+};
+
+type identifiedClientStateParams = {
+  value: IdentifiedClientState,
+};
+
+type heightParams = {
+  value: Height,
+};
+
+type upgradeProposalParams = {
+  value: UpgradeProposal,
+};
+
+type genesisMetadataParams = {
+  value: GenesisMetadata,
+};
+
+type queryConsensusStateHeightsResponseParams = {
+  value: QueryConsensusStateHeightsResponse,
+};
+
+type queryUpgradedConsensusStateRequestParams = {
+  value: QueryUpgradedConsensusStateRequest,
+};
+
+type consensusStateWithHeightParams = {
+  value: ConsensusStateWithHeight,
+};
+
+type clientConsensusStatesParams = {
+  value: ClientConsensusStates,
+};
+
+type genesisStateParams = {
+  value: GenesisState,
+};
+
+type queryClientStateRequestParams = {
+  value: QueryClientStateRequest,
+};
+
+type queryVerifyMembershipResponseParams = {
+  value: QueryVerifyMembershipResponse,
+};
+
+type queryClientStatusRequestParams = {
+  value: QueryClientStatusRequest,
+};
+
 type queryUpgradedClientStateResponseParams = {
   value: QueryUpgradedClientStateResponse,
 };
 
-type msgCreateClientParams = {
-  value: MsgCreateClient,
+type msgUpdateClientParams = {
+  value: MsgUpdateClient,
 };
 
 type msgIbcsoftwareUpgradeParams = {
   value: MsgIBCSoftwareUpgrade,
 };
 
-type queryClientStatesRequestParams = {
-  value: QueryClientStatesRequest,
+type msgCreateClientResponseParams = {
+  value: MsgCreateClientResponse,
+};
+
+type queryClientParamsRequestParams = {
+  value: QueryClientParamsRequest,
+};
+
+type clientUpdateProposalParams = {
+  value: ClientUpdateProposal,
+};
+
+type queryClientStatusResponseParams = {
+  value: QueryClientStatusResponse,
+};
+
+type queryConsensusStateResponseParams = {
+  value: QueryConsensusStateResponse,
+};
+
+type queryConsensusStateRequestParams = {
+  value: QueryConsensusStateRequest,
+};
+
+type queryClientParamsResponseParams = {
+  value: QueryClientParamsResponse,
+};
+
+type queryUpgradedConsensusStateResponseParams = {
+  value: QueryUpgradedConsensusStateResponse,
+};
+
+type msgUpgradeClientResponseParams = {
+  value: MsgUpgradeClientResponse,
+};
+
+type msgRecoverClientResponseParams = {
+  value: MsgRecoverClientResponse,
+};
+
+type msgUpdateParamsParams = {
+  value: MsgUpdateParams,
+};
+
+type queryClientStatesResponseParams = {
+  value: QueryClientStatesResponse,
+};
+
+type queryVerifyMembershipRequestParams = {
+  value: QueryVerifyMembershipRequest,
+};
+
+type queryConsensusStatesResponseParams = {
+  value: QueryConsensusStatesResponse,
+};
+
+type identifiedGenesisMetadataParams = {
+  value: IdentifiedGenesisMetadata,
 };
 
 type msgUpgradeClientParams = {
@@ -379,120 +463,36 @@ type msgSubmitMisbehaviourResponseParams = {
   value: MsgSubmitMisbehaviourResponse,
 };
 
-type msgRecoverClientParams = {
-  value: MsgRecoverClient,
-};
-
-type queryVerifyMembershipResponseParams = {
-  value: QueryVerifyMembershipResponse,
-};
-
-type msgUpdateClientResponseParams = {
-  value: MsgUpdateClientResponse,
-};
-
-type msgUpgradeClientResponseParams = {
-  value: MsgUpgradeClientResponse,
-};
-
-type queryClientParamsRequestParams = {
-  value: QueryClientParamsRequest,
-};
-
-type consensusStateWithHeightParams = {
-  value: ConsensusStateWithHeight,
-};
-
-type genesisStateParams = {
-  value: GenesisState,
-};
-
-type msgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
-};
-
-type queryConsensusStateRequestParams = {
-  value: QueryConsensusStateRequest,
-};
-
-type queryClientStatusResponseParams = {
-  value: QueryClientStatusResponse,
-};
-
-type queryUpgradedConsensusStateRequestParams = {
-  value: QueryUpgradedConsensusStateRequest,
-};
-
-type queryVerifyMembershipRequestParams = {
-  value: QueryVerifyMembershipRequest,
-};
-
-type msgIbcsoftwareUpgradeResponseParams = {
-  value: MsgIBCSoftwareUpgradeResponse,
-};
-
-type paramsParams = {
-  value: Params,
-};
-
-type queryClientStatesResponseParams = {
-  value: QueryClientStatesResponse,
-};
-
-type queryConsensusStatesResponseParams = {
-  value: QueryConsensusStatesResponse,
-};
-
-type queryUpgradedConsensusStateResponseParams = {
-  value: QueryUpgradedConsensusStateResponse,
-};
-
-type msgCreateClientResponseParams = {
-  value: MsgCreateClientResponse,
-};
-
-type queryClientStateResponseParams = {
-  value: QueryClientStateResponse,
+type msgSubmitMisbehaviourParams = {
+  value: MsgSubmitMisbehaviour,
 };
 
 type queryConsensusStatesRequestParams = {
   value: QueryConsensusStatesRequest,
 };
 
-type msgUpdateClientParams = {
-  value: MsgUpdateClient,
+type paramsParams = {
+  value: Params,
 };
 
-type queryClientStatusRequestParams = {
-  value: QueryClientStatusRequest,
+type msgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
 };
 
-type heightParams = {
-  value: Height,
+type queryClientStatesRequestParams = {
+  value: QueryClientStatesRequest,
 };
 
-type clientConsensusStatesParams = {
-  value: ClientConsensusStates,
+type msgRecoverClientParams = {
+  value: MsgRecoverClient,
 };
 
-type genesisMetadataParams = {
-  value: GenesisMetadata,
+type queryClientStateResponseParams = {
+  value: QueryClientStateResponse,
 };
 
-type queryUpgradedClientStateRequestParams = {
-  value: QueryUpgradedClientStateRequest,
-};
-
-type queryConsensusStateHeightsResponseParams = {
-  value: QueryConsensusStateHeightsResponse,
-};
-
-type clientUpdateProposalParams = {
-  value: ClientUpdateProposal,
-};
-
-type identifiedClientStateParams = {
-  value: IdentifiedClientState,
+type msgUpdateClientResponseParams = {
+  value: MsgUpdateClientResponse,
 };
 
 
@@ -525,115 +525,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendIdentifiedGenesisMetadata({ value, fee, memo }: sendIdentifiedGenesisMetadataParams): Promise<DeliverTxResponse> {
+		async sendMsgCreateClient({ value, fee, memo }: sendMsgCreateClientParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendIdentifiedGenesisMetadata: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgCreateClient: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.identifiedGenesisMetadata({ value: IdentifiedGenesisMetadata.fromPartial(value) })
+				let msg = this.msgCreateClient({ value: MsgCreateClient.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendIdentifiedGenesisMetadata: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgCreateClient: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryClientParamsResponse({ value, fee, memo }: sendQueryClientParamsResponseParams): Promise<DeliverTxResponse> {
+		async sendMsgIBCSoftwareUpgradeResponse({ value, fee, memo }: sendMsgIBCSoftwareUpgradeResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryClientParamsResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgIBCSoftwareUpgradeResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryClientParamsResponse({ value: QueryClientParamsResponse.fromPartial(value) })
+				let msg = this.msgIbcsoftwareUpgradeResponse({ value: MsgIBCSoftwareUpgradeResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryClientParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendUpgradeProposal({ value, fee, memo }: sendUpgradeProposalParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendUpgradeProposal: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.upgradeProposal({ value: UpgradeProposal.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendUpgradeProposal: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSubmitMisbehaviour({ value, fee, memo }: sendMsgSubmitMisbehaviourParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSubmitMisbehaviour: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgSubmitMisbehaviour({ value: MsgSubmitMisbehaviour.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSubmitMisbehaviour: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryConsensusStateResponse({ value, fee, memo }: sendQueryConsensusStateResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryConsensusStateResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryConsensusStateResponse({ value: QueryConsensusStateResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryConsensusStateResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRecoverClientResponse({ value, fee, memo }: sendMsgRecoverClientResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRecoverClientResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgRecoverClientResponse({ value: MsgRecoverClientResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRecoverClientResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryClientStateRequest({ value, fee, memo }: sendQueryClientStateRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryClientStateRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryClientStateRequest({ value: QueryClientStateRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryClientStateRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgIBCSoftwareUpgradeResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -651,6 +567,188 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendQueryUpgradedClientStateRequest({ value, fee, memo }: sendQueryUpgradedClientStateRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryUpgradedClientStateRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryUpgradedClientStateRequest({ value: QueryUpgradedClientStateRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryUpgradedClientStateRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendIdentifiedClientState({ value, fee, memo }: sendIdentifiedClientStateParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendIdentifiedClientState: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.identifiedClientState({ value: IdentifiedClientState.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendIdentifiedClientState: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendHeight({ value, fee, memo }: sendHeightParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendHeight: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.height({ value: Height.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendHeight: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendUpgradeProposal({ value, fee, memo }: sendUpgradeProposalParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendUpgradeProposal: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.upgradeProposal({ value: UpgradeProposal.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendUpgradeProposal: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendGenesisMetadata({ value, fee, memo }: sendGenesisMetadataParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendGenesisMetadata: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.genesisMetadata({ value: GenesisMetadata.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendGenesisMetadata: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryConsensusStateHeightsResponse({ value, fee, memo }: sendQueryConsensusStateHeightsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryConsensusStateHeightsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryConsensusStateHeightsResponse({ value: QueryConsensusStateHeightsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryConsensusStateHeightsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryUpgradedConsensusStateRequest({ value, fee, memo }: sendQueryUpgradedConsensusStateRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryUpgradedConsensusStateRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryUpgradedConsensusStateRequest({ value: QueryUpgradedConsensusStateRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryUpgradedConsensusStateRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendConsensusStateWithHeight({ value, fee, memo }: sendConsensusStateWithHeightParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendConsensusStateWithHeight: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.consensusStateWithHeight({ value: ConsensusStateWithHeight.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendConsensusStateWithHeight: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendClientConsensusStates({ value, fee, memo }: sendClientConsensusStatesParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendClientConsensusStates: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.clientConsensusStates({ value: ClientConsensusStates.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendClientConsensusStates: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryClientStateRequest({ value, fee, memo }: sendQueryClientStateRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryClientStateRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryClientStateRequest({ value: QueryClientStateRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryClientStateRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryVerifyMembershipResponse({ value, fee, memo }: sendQueryVerifyMembershipResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryVerifyMembershipResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryVerifyMembershipResponse({ value: QueryVerifyMembershipResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryVerifyMembershipResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryClientStatusRequest({ value, fee, memo }: sendQueryClientStatusRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryClientStatusRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryClientStatusRequest({ value: QueryClientStatusRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryClientStatusRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendQueryUpgradedClientStateResponse({ value, fee, memo }: sendQueryUpgradedClientStateResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendQueryUpgradedClientStateResponse: Unable to sign Tx. Signer is not present.')
@@ -665,17 +763,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgCreateClient({ value, fee, memo }: sendMsgCreateClientParams): Promise<DeliverTxResponse> {
+		async sendMsgUpdateClient({ value, fee, memo }: sendMsgUpdateClientParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateClient: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgUpdateClient: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCreateClient({ value: MsgCreateClient.fromPartial(value) })
+				let msg = this.msgUpdateClient({ value: MsgUpdateClient.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateClient: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgUpdateClient: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -693,17 +791,213 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryClientStatesRequest({ value, fee, memo }: sendQueryClientStatesRequestParams): Promise<DeliverTxResponse> {
+		async sendMsgCreateClientResponse({ value, fee, memo }: sendMsgCreateClientResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryClientStatesRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgCreateClientResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryClientStatesRequest({ value: QueryClientStatesRequest.fromPartial(value) })
+				let msg = this.msgCreateClientResponse({ value: MsgCreateClientResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryClientStatesRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgCreateClientResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryClientParamsRequest({ value, fee, memo }: sendQueryClientParamsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryClientParamsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryClientParamsRequest({ value: QueryClientParamsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryClientParamsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendClientUpdateProposal({ value, fee, memo }: sendClientUpdateProposalParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendClientUpdateProposal: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.clientUpdateProposal({ value: ClientUpdateProposal.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendClientUpdateProposal: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryClientStatusResponse({ value, fee, memo }: sendQueryClientStatusResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryClientStatusResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryClientStatusResponse({ value: QueryClientStatusResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryClientStatusResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryConsensusStateResponse({ value, fee, memo }: sendQueryConsensusStateResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryConsensusStateResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryConsensusStateResponse({ value: QueryConsensusStateResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryConsensusStateResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryConsensusStateRequest({ value, fee, memo }: sendQueryConsensusStateRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryConsensusStateRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryConsensusStateRequest({ value: QueryConsensusStateRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryConsensusStateRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryClientParamsResponse({ value, fee, memo }: sendQueryClientParamsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryClientParamsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryClientParamsResponse({ value: QueryClientParamsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryClientParamsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryUpgradedConsensusStateResponse({ value, fee, memo }: sendQueryUpgradedConsensusStateResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryUpgradedConsensusStateResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryUpgradedConsensusStateResponse({ value: QueryUpgradedConsensusStateResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryUpgradedConsensusStateResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpgradeClientResponse({ value, fee, memo }: sendMsgUpgradeClientResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpgradeClientResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpgradeClientResponse({ value: MsgUpgradeClientResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpgradeClientResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgRecoverClientResponse({ value, fee, memo }: sendMsgRecoverClientResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRecoverClientResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgRecoverClientResponse({ value: MsgRecoverClientResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgRecoverClientResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryClientStatesResponse({ value, fee, memo }: sendQueryClientStatesResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryClientStatesResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryClientStatesResponse({ value: QueryClientStatesResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryClientStatesResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryVerifyMembershipRequest({ value, fee, memo }: sendQueryVerifyMembershipRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryVerifyMembershipRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryVerifyMembershipRequest({ value: QueryVerifyMembershipRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryVerifyMembershipRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryConsensusStatesResponse({ value, fee, memo }: sendQueryConsensusStatesResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryConsensusStatesResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryConsensusStatesResponse({ value: QueryConsensusStatesResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryConsensusStatesResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendIdentifiedGenesisMetadata({ value, fee, memo }: sendIdentifiedGenesisMetadataParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendIdentifiedGenesisMetadata: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.identifiedGenesisMetadata({ value: IdentifiedGenesisMetadata.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendIdentifiedGenesisMetadata: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -735,269 +1029,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgRecoverClient({ value, fee, memo }: sendMsgRecoverClientParams): Promise<DeliverTxResponse> {
+		async sendMsgSubmitMisbehaviour({ value, fee, memo }: sendMsgSubmitMisbehaviourParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgRecoverClient: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgSubmitMisbehaviour: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgRecoverClient({ value: MsgRecoverClient.fromPartial(value) })
+				let msg = this.msgSubmitMisbehaviour({ value: MsgSubmitMisbehaviour.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRecoverClient: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryVerifyMembershipResponse({ value, fee, memo }: sendQueryVerifyMembershipResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryVerifyMembershipResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryVerifyMembershipResponse({ value: QueryVerifyMembershipResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryVerifyMembershipResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateClientResponse({ value, fee, memo }: sendMsgUpdateClientResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateClientResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateClientResponse({ value: MsgUpdateClientResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateClientResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpgradeClientResponse({ value, fee, memo }: sendMsgUpgradeClientResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpgradeClientResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpgradeClientResponse({ value: MsgUpgradeClientResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpgradeClientResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryClientParamsRequest({ value, fee, memo }: sendQueryClientParamsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryClientParamsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryClientParamsRequest({ value: QueryClientParamsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryClientParamsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendConsensusStateWithHeight({ value, fee, memo }: sendConsensusStateWithHeightParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendConsensusStateWithHeight: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.consensusStateWithHeight({ value: ConsensusStateWithHeight.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendConsensusStateWithHeight: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryConsensusStateRequest({ value, fee, memo }: sendQueryConsensusStateRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryConsensusStateRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryConsensusStateRequest({ value: QueryConsensusStateRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryConsensusStateRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryClientStatusResponse({ value, fee, memo }: sendQueryClientStatusResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryClientStatusResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryClientStatusResponse({ value: QueryClientStatusResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryClientStatusResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryUpgradedConsensusStateRequest({ value, fee, memo }: sendQueryUpgradedConsensusStateRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryUpgradedConsensusStateRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryUpgradedConsensusStateRequest({ value: QueryUpgradedConsensusStateRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryUpgradedConsensusStateRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryVerifyMembershipRequest({ value, fee, memo }: sendQueryVerifyMembershipRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryVerifyMembershipRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryVerifyMembershipRequest({ value: QueryVerifyMembershipRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryVerifyMembershipRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgIBCSoftwareUpgradeResponse({ value, fee, memo }: sendMsgIBCSoftwareUpgradeResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgIBCSoftwareUpgradeResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgIbcsoftwareUpgradeResponse({ value: MsgIBCSoftwareUpgradeResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgIBCSoftwareUpgradeResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.params({ value: Params.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryClientStatesResponse({ value, fee, memo }: sendQueryClientStatesResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryClientStatesResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryClientStatesResponse({ value: QueryClientStatesResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryClientStatesResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryConsensusStatesResponse({ value, fee, memo }: sendQueryConsensusStatesResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryConsensusStatesResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryConsensusStatesResponse({ value: QueryConsensusStatesResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryConsensusStatesResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryUpgradedConsensusStateResponse({ value, fee, memo }: sendQueryUpgradedConsensusStateResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryUpgradedConsensusStateResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryUpgradedConsensusStateResponse({ value: QueryUpgradedConsensusStateResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryUpgradedConsensusStateResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCreateClientResponse({ value, fee, memo }: sendMsgCreateClientResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateClientResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgCreateClientResponse({ value: MsgCreateClientResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateClientResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryClientStateResponse({ value, fee, memo }: sendQueryClientStateResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryClientStateResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryClientStateResponse({ value: QueryClientStateResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryClientStateResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgSubmitMisbehaviour: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -1015,194 +1057,104 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgUpdateClient({ value, fee, memo }: sendMsgUpdateClientParams): Promise<DeliverTxResponse> {
+		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateClient: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateClient({ value: MsgUpdateClient.fromPartial(value) })
+				let msg = this.params({ value: Params.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateClient: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryClientStatusRequest({ value, fee, memo }: sendQueryClientStatusRequestParams): Promise<DeliverTxResponse> {
+		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryClientStatusRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryClientStatusRequest({ value: QueryClientStatusRequest.fromPartial(value) })
+				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryClientStatusRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendHeight({ value, fee, memo }: sendHeightParams): Promise<DeliverTxResponse> {
+		async sendQueryClientStatesRequest({ value, fee, memo }: sendQueryClientStatesRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendHeight: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryClientStatesRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.height({ value: Height.fromPartial(value) })
+				let msg = this.queryClientStatesRequest({ value: QueryClientStatesRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendHeight: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryClientStatesRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendClientConsensusStates({ value, fee, memo }: sendClientConsensusStatesParams): Promise<DeliverTxResponse> {
+		async sendMsgRecoverClient({ value, fee, memo }: sendMsgRecoverClientParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendClientConsensusStates: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgRecoverClient: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.clientConsensusStates({ value: ClientConsensusStates.fromPartial(value) })
+				let msg = this.msgRecoverClient({ value: MsgRecoverClient.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendClientConsensusStates: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgRecoverClient: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendGenesisMetadata({ value, fee, memo }: sendGenesisMetadataParams): Promise<DeliverTxResponse> {
+		async sendQueryClientStateResponse({ value, fee, memo }: sendQueryClientStateResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendGenesisMetadata: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryClientStateResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.genesisMetadata({ value: GenesisMetadata.fromPartial(value) })
+				let msg = this.queryClientStateResponse({ value: QueryClientStateResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendGenesisMetadata: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryClientStateResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendQueryUpgradedClientStateRequest({ value, fee, memo }: sendQueryUpgradedClientStateRequestParams): Promise<DeliverTxResponse> {
+		async sendMsgUpdateClientResponse({ value, fee, memo }: sendMsgUpdateClientResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryUpgradedClientStateRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgUpdateClientResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryUpgradedClientStateRequest({ value: QueryUpgradedClientStateRequest.fromPartial(value) })
+				let msg = this.msgUpdateClientResponse({ value: MsgUpdateClientResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryUpgradedClientStateRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryConsensusStateHeightsResponse({ value, fee, memo }: sendQueryConsensusStateHeightsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryConsensusStateHeightsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryConsensusStateHeightsResponse({ value: QueryConsensusStateHeightsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryConsensusStateHeightsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendClientUpdateProposal({ value, fee, memo }: sendClientUpdateProposalParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendClientUpdateProposal: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.clientUpdateProposal({ value: ClientUpdateProposal.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendClientUpdateProposal: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendIdentifiedClientState({ value, fee, memo }: sendIdentifiedClientStateParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendIdentifiedClientState: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.identifiedClientState({ value: IdentifiedClientState.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendIdentifiedClientState: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgUpdateClientResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
 		
-		identifiedGenesisMetadata({ value }: identifiedGenesisMetadataParams): EncodeObject {
+		msgCreateClient({ value }: msgCreateClientParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.IdentifiedGenesisMetadata", value: IdentifiedGenesisMetadata.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.MsgCreateClient", value: MsgCreateClient.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:IdentifiedGenesisMetadata: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCreateClient: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryClientParamsResponse({ value }: queryClientParamsResponseParams): EncodeObject {
+		msgIbcsoftwareUpgradeResponse({ value }: msgIbcsoftwareUpgradeResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryClientParamsResponse", value: QueryClientParamsResponse.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgradeResponse", value: MsgIBCSoftwareUpgradeResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryClientParamsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		upgradeProposal({ value }: upgradeProposalParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.UpgradeProposal", value: UpgradeProposal.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:UpgradeProposal: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSubmitMisbehaviour({ value }: msgSubmitMisbehaviourParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour", value: MsgSubmitMisbehaviour.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitMisbehaviour: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryConsensusStateResponse({ value }: queryConsensusStateResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryConsensusStateResponse", value: QueryConsensusStateResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryConsensusStateResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRecoverClientResponse({ value }: msgRecoverClientResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgRecoverClientResponse", value: MsgRecoverClientResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRecoverClientResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryClientStateRequest({ value }: queryClientStateRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryClientStateRequest", value: QueryClientStateRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryClientStateRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgIBCSoftwareUpgradeResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1214,6 +1166,110 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		queryUpgradedClientStateRequest({ value }: queryUpgradedClientStateRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryUpgradedClientStateRequest", value: QueryUpgradedClientStateRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryUpgradedClientStateRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		identifiedClientState({ value }: identifiedClientStateParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.IdentifiedClientState", value: IdentifiedClientState.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:IdentifiedClientState: Could not create message: ' + e.message)
+			}
+		},
+		
+		height({ value }: heightParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.Height", value: Height.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Height: Could not create message: ' + e.message)
+			}
+		},
+		
+		upgradeProposal({ value }: upgradeProposalParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.UpgradeProposal", value: UpgradeProposal.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:UpgradeProposal: Could not create message: ' + e.message)
+			}
+		},
+		
+		genesisMetadata({ value }: genesisMetadataParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.GenesisMetadata", value: GenesisMetadata.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:GenesisMetadata: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryConsensusStateHeightsResponse({ value }: queryConsensusStateHeightsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryConsensusStateHeightsResponse", value: QueryConsensusStateHeightsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryConsensusStateHeightsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryUpgradedConsensusStateRequest({ value }: queryUpgradedConsensusStateRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryUpgradedConsensusStateRequest", value: QueryUpgradedConsensusStateRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryUpgradedConsensusStateRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		consensusStateWithHeight({ value }: consensusStateWithHeightParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.ConsensusStateWithHeight", value: ConsensusStateWithHeight.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:ConsensusStateWithHeight: Could not create message: ' + e.message)
+			}
+		},
+		
+		clientConsensusStates({ value }: clientConsensusStatesParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.ClientConsensusStates", value: ClientConsensusStates.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:ClientConsensusStates: Could not create message: ' + e.message)
+			}
+		},
+		
+		genesisState({ value }: genesisStateParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.GenesisState", value: GenesisState.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryClientStateRequest({ value }: queryClientStateRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryClientStateRequest", value: QueryClientStateRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryClientStateRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryVerifyMembershipResponse({ value }: queryVerifyMembershipResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryVerifyMembershipResponse", value: QueryVerifyMembershipResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryVerifyMembershipResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryClientStatusRequest({ value }: queryClientStatusRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryClientStatusRequest", value: QueryClientStatusRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryClientStatusRequest: Could not create message: ' + e.message)
+			}
+		},
+		
 		queryUpgradedClientStateResponse({ value }: queryUpgradedClientStateResponseParams): EncodeObject {
 			try {
 				return { typeUrl: "/ibc.core.client.v1.QueryUpgradedClientStateResponse", value: QueryUpgradedClientStateResponse.fromPartial( value ) }  
@@ -1222,11 +1278,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgCreateClient({ value }: msgCreateClientParams): EncodeObject {
+		msgUpdateClient({ value }: msgUpdateClientParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgCreateClient", value: MsgCreateClient.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.MsgUpdateClient", value: MsgUpdateClient.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateClient: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgUpdateClient: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1238,11 +1294,123 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryClientStatesRequest({ value }: queryClientStatesRequestParams): EncodeObject {
+		msgCreateClientResponse({ value }: msgCreateClientResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryClientStatesRequest", value: QueryClientStatesRequest.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.MsgCreateClientResponse", value: MsgCreateClientResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryClientStatesRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCreateClientResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryClientParamsRequest({ value }: queryClientParamsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryClientParamsRequest", value: QueryClientParamsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryClientParamsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		clientUpdateProposal({ value }: clientUpdateProposalParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.ClientUpdateProposal", value: ClientUpdateProposal.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:ClientUpdateProposal: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryClientStatusResponse({ value }: queryClientStatusResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryClientStatusResponse", value: QueryClientStatusResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryClientStatusResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryConsensusStateResponse({ value }: queryConsensusStateResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryConsensusStateResponse", value: QueryConsensusStateResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryConsensusStateResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryConsensusStateRequest({ value }: queryConsensusStateRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryConsensusStateRequest", value: QueryConsensusStateRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryConsensusStateRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryClientParamsResponse({ value }: queryClientParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryClientParamsResponse", value: QueryClientParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryClientParamsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryUpgradedConsensusStateResponse({ value }: queryUpgradedConsensusStateResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryUpgradedConsensusStateResponse", value: QueryUpgradedConsensusStateResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryUpgradedConsensusStateResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpgradeClientResponse({ value }: msgUpgradeClientResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.MsgUpgradeClientResponse", value: MsgUpgradeClientResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpgradeClientResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgRecoverClientResponse({ value }: msgRecoverClientResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.MsgRecoverClientResponse", value: MsgRecoverClientResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRecoverClientResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryClientStatesResponse({ value }: queryClientStatesResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryClientStatesResponse", value: QueryClientStatesResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryClientStatesResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryVerifyMembershipRequest({ value }: queryVerifyMembershipRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryVerifyMembershipRequest", value: QueryVerifyMembershipRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryVerifyMembershipRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryConsensusStatesResponse({ value }: queryConsensusStatesResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.QueryConsensusStatesResponse", value: QueryConsensusStatesResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryConsensusStatesResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		identifiedGenesisMetadata({ value }: identifiedGenesisMetadataParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.core.client.v1.IdentifiedGenesisMetadata", value: IdentifiedGenesisMetadata.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:IdentifiedGenesisMetadata: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1262,155 +1430,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgRecoverClient({ value }: msgRecoverClientParams): EncodeObject {
+		msgSubmitMisbehaviour({ value }: msgSubmitMisbehaviourParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgRecoverClient", value: MsgRecoverClient.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour", value: MsgSubmitMisbehaviour.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgRecoverClient: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryVerifyMembershipResponse({ value }: queryVerifyMembershipResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryVerifyMembershipResponse", value: QueryVerifyMembershipResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryVerifyMembershipResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateClientResponse({ value }: msgUpdateClientResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgUpdateClientResponse", value: MsgUpdateClientResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateClientResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpgradeClientResponse({ value }: msgUpgradeClientResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgUpgradeClientResponse", value: MsgUpgradeClientResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpgradeClientResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryClientParamsRequest({ value }: queryClientParamsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryClientParamsRequest", value: QueryClientParamsRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryClientParamsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		consensusStateWithHeight({ value }: consensusStateWithHeightParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.ConsensusStateWithHeight", value: ConsensusStateWithHeight.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:ConsensusStateWithHeight: Could not create message: ' + e.message)
-			}
-		},
-		
-		genesisState({ value }: genesisStateParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.GenesisState", value: GenesisState.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryConsensusStateRequest({ value }: queryConsensusStateRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryConsensusStateRequest", value: QueryConsensusStateRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryConsensusStateRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryClientStatusResponse({ value }: queryClientStatusResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryClientStatusResponse", value: QueryClientStatusResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryClientStatusResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryUpgradedConsensusStateRequest({ value }: queryUpgradedConsensusStateRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryUpgradedConsensusStateRequest", value: QueryUpgradedConsensusStateRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryUpgradedConsensusStateRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryVerifyMembershipRequest({ value }: queryVerifyMembershipRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryVerifyMembershipRequest", value: QueryVerifyMembershipRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryVerifyMembershipRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgIbcsoftwareUpgradeResponse({ value }: msgIbcsoftwareUpgradeResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgradeResponse", value: MsgIBCSoftwareUpgradeResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgIBCSoftwareUpgradeResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		params({ value }: paramsParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.Params", value: Params.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Params: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryClientStatesResponse({ value }: queryClientStatesResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryClientStatesResponse", value: QueryClientStatesResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryClientStatesResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryConsensusStatesResponse({ value }: queryConsensusStatesResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryConsensusStatesResponse", value: QueryConsensusStatesResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryConsensusStatesResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryUpgradedConsensusStateResponse({ value }: queryUpgradedConsensusStateResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryUpgradedConsensusStateResponse", value: QueryUpgradedConsensusStateResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryUpgradedConsensusStateResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCreateClientResponse({ value }: msgCreateClientResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgCreateClientResponse", value: MsgCreateClientResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateClientResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryClientStateResponse({ value }: queryClientStateResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryClientStateResponse", value: QueryClientStateResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryClientStateResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgSubmitMisbehaviour: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1422,75 +1446,51 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgUpdateClient({ value }: msgUpdateClientParams): EncodeObject {
+		params({ value }: paramsParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.MsgUpdateClient", value: MsgUpdateClient.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.Params", value: Params.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateClient: Could not create message: ' + e.message)
+				throw new Error('TxClient:Params: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryClientStatusRequest({ value }: queryClientStatusRequestParams): EncodeObject {
+		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryClientStatusRequest", value: QueryClientStatusRequest.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryClientStatusRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
 			}
 		},
 		
-		height({ value }: heightParams): EncodeObject {
+		queryClientStatesRequest({ value }: queryClientStatesRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.Height", value: Height.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.QueryClientStatesRequest", value: QueryClientStatesRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:Height: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryClientStatesRequest: Could not create message: ' + e.message)
 			}
 		},
 		
-		clientConsensusStates({ value }: clientConsensusStatesParams): EncodeObject {
+		msgRecoverClient({ value }: msgRecoverClientParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.ClientConsensusStates", value: ClientConsensusStates.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.MsgRecoverClient", value: MsgRecoverClient.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:ClientConsensusStates: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgRecoverClient: Could not create message: ' + e.message)
 			}
 		},
 		
-		genesisMetadata({ value }: genesisMetadataParams): EncodeObject {
+		queryClientStateResponse({ value }: queryClientStateResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.GenesisMetadata", value: GenesisMetadata.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.QueryClientStateResponse", value: QueryClientStateResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:GenesisMetadata: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryClientStateResponse: Could not create message: ' + e.message)
 			}
 		},
 		
-		queryUpgradedClientStateRequest({ value }: queryUpgradedClientStateRequestParams): EncodeObject {
+		msgUpdateClientResponse({ value }: msgUpdateClientResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryUpgradedClientStateRequest", value: QueryUpgradedClientStateRequest.fromPartial( value ) }  
+				return { typeUrl: "/ibc.core.client.v1.MsgUpdateClientResponse", value: MsgUpdateClientResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryUpgradedClientStateRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryConsensusStateHeightsResponse({ value }: queryConsensusStateHeightsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.QueryConsensusStateHeightsResponse", value: QueryConsensusStateHeightsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryConsensusStateHeightsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		clientUpdateProposal({ value }: clientUpdateProposalParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.ClientUpdateProposal", value: ClientUpdateProposal.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:ClientUpdateProposal: Could not create message: ' + e.message)
-			}
-		},
-		
-		identifiedClientState({ value }: identifiedClientStateParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.core.client.v1.IdentifiedClientState", value: IdentifiedClientState.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:IdentifiedClientState: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgUpdateClientResponse: Could not create message: ' + e.message)
 			}
 		},
 		
